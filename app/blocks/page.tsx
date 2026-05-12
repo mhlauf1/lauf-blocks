@@ -270,21 +270,21 @@ const blocks: Block[] = [
     slug: "auth-sign-in",
     category: "App",
     description: "Sign-in form with email/password, social login options, and forgot password link.",
-    built: false,
+    built: true,
   },
   {
     name: "Auth — Sign Up",
     slug: "auth-sign-up",
     category: "App",
     description: "Registration form with name, email, password, and terms checkbox.",
-    built: false,
+    built: true,
   },
   {
     name: "Auth — Split",
     slug: "auth-split",
     category: "App",
     description: "Auth form on one side, branded visual or testimonial on the other.",
-    built: false,
+    built: true,
   },
 
   // ── App: Dashboard ──
@@ -293,14 +293,14 @@ const blocks: Block[] = [
     slug: "dashboard-shell",
     category: "App",
     description: "App shell with sidebar nav, top bar, and main content area.",
-    built: false,
+    built: true,
   },
   {
     name: "Dashboard — Overview",
     slug: "dashboard-overview",
     category: "App",
     description: "Metric cards, charts, and recent activity in a dashboard layout.",
-    built: false,
+    built: true,
   },
 
   // ── App: Sidebar ──
@@ -309,7 +309,7 @@ const blocks: Block[] = [
     slug: "sidebar-collapsible",
     category: "App",
     description: "Vertical sidebar that collapses to icons. Groups, active states, badge counts.",
-    built: false,
+    built: true,
   },
 
   // ── App: Settings ──
@@ -318,14 +318,14 @@ const blocks: Block[] = [
     slug: "settings-form",
     category: "App",
     description: "Settings page with grouped form sections and save/cancel.",
-    built: false,
+    built: true,
   },
   {
     name: "Settings — Tabbed",
     slug: "settings-tabbed",
     category: "App",
     description: "Settings with tab navigation (Profile, Billing, Notifications, etc.).",
-    built: false,
+    built: true,
   },
 
   // ── App: Data Table ──
@@ -334,7 +334,7 @@ const blocks: Block[] = [
     slug: "data-table-full",
     category: "App",
     description: "Sortable, filterable table with pagination, row selection, and bulk actions.",
-    built: false,
+    built: true,
   },
 
   // ── App: Empty States ──
@@ -343,7 +343,7 @@ const blocks: Block[] = [
     slug: "empty-state-simple",
     category: "App",
     description: "Illustration or icon, headline, body, and primary action for empty views.",
-    built: false,
+    built: true,
   },
 
   // ── App: Notification / Banners ──
@@ -352,7 +352,7 @@ const blocks: Block[] = [
     slug: "banner-top",
     category: "App",
     description: "Dismissible announcement banner pinned to top of page.",
-    built: false,
+    built: true,
   },
 
   // ── Templates ──
