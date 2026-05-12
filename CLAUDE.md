@@ -1,4 +1,4 @@
-# Block Library — Project Brief & Conventions
+# Lauf Blocks — Project Brief & Conventions
 
 > This document is the project's source of truth for what we're building, how we're building it, and why. Read it fully before touching code. It is a living document — we will edit it together as patterns emerge.
 
@@ -6,32 +6,29 @@
 
 ## What this is
 
-A personal Next.js 16 library of composed, production-grade UI blocks — **marketing sections, web app sections, and full page templates** — that I own, store, browse via a local showcase site, and use to mock up client work quickly.
+A SaaS product built on Next.js 16 — a storefront of composed, production-grade UI blocks (marketing sections, web app sections, and full page templates) that users can browse, preview, and copy-paste into their own projects.
 
-It is **not** a SaaS, not a public component library, not something I'm publishing or selling. It's a private workshop and reference collection that compounds in value over time.
+The product has two tiers: **Free** (12 blocks across every category) and **Pro** (all 48+ blocks, unlocked via Stripe subscription). Access model is shadcn-style copy/paste — no CLI, no npm install.
 
-## What it isn't
+## What it grew from
 
-- Not a UI primitives library. shadcn/ui handles that layer underneath. I am building _on top of_ primitives, not rebuilding them.
-- Not a public-facing product. The showcase site is for me, not visitors. It can be opinionated, dense, even utilitarian — it's an internal tool, not a marketing page.
-- Not a published npm package. No semver, no install docs, no breaking-changes process.
-- Not a finished thing. It's a long-running personal practice that grows over time.
+This started as a personal block library and workshop. The existing 48 blocks are the foundation — the "free" tier is a curated subset, and everything else is pro. New blocks can be added to either tier.
 
-## The five goals that drive every decision
+## The goals that drive every decision
 
-1. Have well-built components I can drop into real client websites
-2. Have a coherent personal library/playbook that represents my work
-3. Use the project to develop and refine my own process
-4. Practice and get better at frontend craft
-5. Have substantive, shareable work I can post about
+1. Ship a clean, functional SaaS storefront for UI blocks
+2. Make blocks easy to browse, preview, and copy
+3. Maintain production-grade code quality in every block
+4. Keep adding blocks — the library compounds in value
+5. Keep blocks data-driven so they're instantly customizable
 
-When something is unclear, optimize for these — especially #3 and #4. Doing things slightly slower and cleaner beats moving fast and accumulating debt.
+When something is unclear, optimize for user experience (#2) and code quality (#3).
 
-## The longer-term play (informs current decisions)
+## The longer-term play
 
-Eventually I want a workflow where I can look at a bad website, plug in a client's information and assets, and use this block library to mock up something far better on the fly. **I am not building that tool yet**, but every decision should keep that future cheap.
+Eventually: a workflow where you look at a bad website, plug in client information, and use this block library to mock up something far better on the fly. **Not building that tool yet**, but blocks stay data-driven to keep that future cheap.
 
-The single biggest implication: **blocks are data-driven from day one.** No hardcoded copy. No baked-in images. Each block accepts a typed `content` prop (or destructured equivalent), and the demo content shown in the showcase is just one default object passed in. To mock up a client later, I swap the content object. If we hardcode strings into JSX now, future-me has to refactor everything.
+The single biggest implication: **blocks are data-driven.** No hardcoded copy. Each block accepts a typed `content` prop, and the demo content is just one default object. Copy-paste users get the type + demo content as separate files.
 
 ---
 
@@ -43,47 +40,78 @@ The single biggest implication: **blocks are data-driven from day one.** No hard
 - **Primitives:** shadcn/ui (base-nova style, base-ui underneath)
 - **Icons:** Lucide
 - **Images:** `next/image` — abstract gradient/SVG placeholders for demo content
-- **Motion:** Motion (framer-motion) — installed from day one. Blocks using motion require `"use client"`.
+- **Motion:** Motion (framer-motion) — blocks using motion require `"use client"`
+- **Auth:** Clerk (`@clerk/nextjs` v7) — `Show` component, `auth()` from server, `useUser()` client-side
+- **Payments:** Stripe — checkout sessions, webhooks, customer portal
+- **Syntax highlighting:** Shiki (server-side, dual-theme)
 - **Package manager:** pnpm
-- **Linting/formatting:** Biome (for formatting + linting) alongside eslint-config-next (for Next.js-specific rules)
-- **Dark mode:** Built in from day one via `next-themes` + Tailwind `dark:` variant. Theme toggle uses class strategy.
-- **Testing:** None for now. The Next.js showcase site is the preview tool.
+- **Linting/formatting:** Biome + eslint-config-next
+- **Dark mode:** `next-themes` + Tailwind `dark:` variant, class strategy
 
 ---
 
 ## Aesthetic direction
 
-Modern, clean, system-feeling, minimal color palette. The trap with "minimal" is landing as generic shadcn-default. To stay minimal _and_ distinctive, the differentiation lives in details:
+Modern, clean, system-feeling, minimal color palette.
 
-- **Typefaces:** Satoshi (400/500/700) for headlines (`font-heading`), Inter 400 for body (`font-sans`). Satoshi is self-hosted via `next/font/local`; Inter via `next/font/google`.
-- Real spacing discipline on an 8pt grid; body type around 16–17px with generous line-height (most "minimal" sites are too cramped)
-- **Borders, no shadows.** Hairline 1px borders in `border` token. Depth comes from spacing and background color shifts, not elevation.
-- **Accent color:** Teal (`#0D9488` / oklch 0.55 0.13 175). Full custom scale defined as `teal-50` through `teal-950`. Primary button/link/ring color uses this.
-- **Custom easing curves:** `--ease-out-expo`, `--ease-in-out-expo`, `--ease-out-back` defined in the theme. No default ease-in-out.
+- **Typefaces:** Satoshi (400/500/700) for headlines (`font-heading`), Inter 400 for body (`font-sans`)
+- Spacing on 8pt grid; body type 16–17px with generous line-height
+- **Borders, no shadows.** Hairline 1px borders. Depth from spacing and bg shifts.
+- **Accent color:** Teal (`#0D9488` / oklch 0.55 0.13 175). Custom scale `teal-50` through `teal-950`.
+- **Custom easing curves:** `--ease-out-expo`, `--ease-in-out-expo`, `--ease-out-back`
 
-These are tendencies, not rules. Break them when there's a reason and we'll talk about it.
+Accessibility is non-negotiable. Focus states, keyboard nav, WCAG AA contrast, semantic HTML.
 
-Accessibility is non-negotiable. Real focus states. Real keyboard navigation. Color contrast that passes WCAG AA. Semantic HTML. This is craft work.
+---
+
+## Architecture
+
+### Block registry
+
+`lib/blocks/registry.ts` is the single source of truth for all block metadata. Every block has: slug, name, description, category, section, tier ("free"|"pro"), componentPath, contentPath.
+
+`lib/blocks/helpers.ts` provides query functions: `getBlockBySlug()`, `getBlocksByCategory()`, `getCategoriesWithCounts()`, `getFreeBlocks()`, etc.
+
+### Source code serving
+
+Block `.tsx` files are cached at build time by `scripts/prebuild-sources.ts` → `lib/blocks/.generated/sources.json`. Runtime reads from this JSON (no `fs` calls). Syntax highlighted server-side with shiki.
+
+### Component + content maps
+
+`scripts/generate-block-maps.ts` reads the registry and generates `lib/blocks/component-map.ts` (dynamic imports for preview) and `lib/blocks/content-map.ts` (dynamic imports for demo content). Run via `pnpm run prebuild:all`.
+
+### Auth + payments
+
+- Clerk `publicMetadata.plan` stores tier ("free"|"pro")
+- Clerk `privateMetadata.stripeCustomerId` links to Stripe
+- Stripe webhooks update Clerk metadata on subscription changes
+- `lib/auth/subscription.ts` provides `getUserPlan()` and `isProUser()`
+- No database for MVP — Clerk is the user store, Stripe is the payment store
 
 ---
 
 ## Demo content
 
-All demo content uses **"Helix"** — a fictional modern SaaS company. This keeps the showcase feeling like a cohesive real site rather than a grab bag. Shared brand data lives in `lib/demo/helix.ts`.
+All demo content uses **"Helix"** — a fictional modern SaaS company. Shared brand data: `lib/demo/helix.ts`.
 
 ---
 
 ## The structure of a "block"
 
-**Variants are the unit of value.** A "Hero" is not one component — it's a family of variants (centered/type-led, asymmetric split, with video, with dashboard mock, etc.). The library's worth comes from variant depth.
-
 Each block (variant) consists of:
 
-1. **The component itself** — fully data-driven, typed props, exported from its own file. Types (the content interface) are exported from the component file.
-2. **A demo content file** (`.content.ts` or `.content.tsx`) — default demo data only, imports the type from the component. Lives alongside the component as a sibling file.
-3. **A showcase route** — flat route at `/blocks/[block-name]` that previews the block with demo content.
+1. **The component** — data-driven, typed props, in `components/blocks/{section}/{name}/{name}.tsx`
+2. **Demo content** — `{name}.content.ts` or `.content.tsx` sibling file
+3. **Registry entry** — in `lib/blocks/registry.ts` (slug, metadata, tier, paths)
 
-No spec markdown files — the typed content interface is the contract. We'll add specs later if we find we need them.
+No separate showcase route files needed — the dynamic `[slug]` route handles all blocks.
+
+### Adding a new block
+
+1. Build the component + content file in `components/blocks/{section}/{name}/`
+2. Add registry entry in `lib/blocks/registry.ts`
+3. Run `pnpm run prebuild:all` to regenerate maps and source cache
+4. Visit `/blocks/{slug}` to verify
 
 ---
 
@@ -91,70 +119,89 @@ No spec markdown files — the typed content interface is the contract. We'll ad
 
 ```
 /app
-  /blocks                    # Flat showcase routes
-    /page.tsx                # Index — grid of all blocks
-    /hero-centered/page.tsx  # Preview route for each block
-    /hero-split/page.tsx
-  /fonts                     # Self-hosted font files (Satoshi woff2)
-  /globals.css               # Tailwind + theme tokens + base styles
-  /layout.tsx                # Root layout (fonts, ThemeProvider)
-  /page.tsx                  # Redirects to /blocks
+  /layout.tsx                          # Root: fonts, ClerkProvider, ThemeProvider
+  /page.tsx                            # Marketing landing page
+  /globals.css                         # Tailwind v4 theme tokens
+  /pricing/page.tsx                    # Pricing comparison
+  /(auth)
+    /sign-in/[[...sign-in]]/page.tsx
+    /sign-up/[[...sign-up]]/page.tsx
+  /(storefront)
+    /layout.tsx                        # Sidebar + header with auth
+    /blocks
+      /page.tsx                        # Block grid + category filter
+      /[slug]/page.tsx                 # Block detail (preview + code)
+      /[slug]/tabs.tsx                 # Client-side tab switching
+  /preview
+    /[slug]/page.tsx                   # Isolated block render (iframe target)
+  /api
+    /blocks/[slug]/source/route.ts     # Source code endpoint (pro-gated)
+    /webhooks/stripe/route.ts          # Stripe webhook handler
+    /stripe/checkout/route.ts          # Create checkout session
+    /stripe/portal/route.ts            # Customer portal session
 /components
-  /ui                        # shadcn primitives (do not edit unless necessary)
-  /blocks
-    /marketing
-      /hero-centered
-        /hero-centered.tsx
-        /hero-centered.content.tsx
-      /hero-split
-        /hero-split.tsx
-        /hero-split.content.ts
-      /features-grid/...
+  /blocks/                             # All block components
+    /marketing/...
     /app/...
     /templates/...
-  /theme-provider.tsx         # next-themes wrapper (client component)
+  /storefront/                         # Storefront UI
+    sidebar.tsx, block-card.tsx, block-grid.tsx,
+    source-panel.tsx, copy-button.tsx, tier-badge.tsx,
+    upgrade-cta.tsx, header.tsx, mobile-sidebar.tsx
+  /ui/                                 # shadcn primitives
+  /theme-provider.tsx
+  /theme-toggle.tsx
 /lib
-  /demo
-    /helix.ts                 # Shared Helix brand data
-  /utils.ts                   # cn() and other utilities
-/public
+  /blocks/
+    registry.ts, helpers.ts,
+    source.ts, highlight.ts,
+    component-map.ts, content-map.ts,   # Generated — do not edit
+    .generated/sources.json             # Generated — do not edit
+  /auth/subscription.ts
+  /stripe/client.ts, config.ts
+  /demo/helix.ts
+  /utils.ts
+/scripts/
+  prebuild-sources.ts
+  generate-block-maps.ts
+/middleware.ts                         # Clerk middleware
+/docs/                                # Architecture + integration docs
 ```
-
-The showcase has a sticky header (logo + theme toggle) defined in `/app/blocks/layout.tsx`.
-
-Note: blocks live in `/components/blocks/` and showcase routes live in `/app/blocks/`. This two-directory pattern is a known friction point but keeps component code separate from routing.
 
 ---
 
 ## Conventions
 
-- **File naming:** kebab-case for files (`hero-centered.tsx`), PascalCase for exported components (`HeroCentered`)
-- **Components:** Server Components by default; add `"use client"` only when you need interactivity, state, browser APIs, or motion — which is the common case for blocks with animations.
-- **Props:** every block exports its content interface (e.g., `HeroCenteredContent`) so types can be imported without pulling demo data.
-- **Content shape:** demo data imports from `./[block-name].content.ts` — never inline copy in JSX
-- **Links as buttons:** use `buttonVariants()` from shadcn on `<Link>` elements directly, not `<Button asChild>` (base-nova's Button doesn't support asChild)
-- **Images:** every image needs alt text and explicit dimensions
-- **TypeScript:** no `any`, no `@ts-ignore` without a comment explaining why
-- **No dead code, no commented-out blocks, no leftover scaffolding** — this is a craft project
-- **Responsive:** mobile-first, tested at standard breakpoints, sensible behavior down to ~360px
-- **Commits:** small and reviewable, not big dumps
+- **File naming:** kebab-case files, PascalCase exports
+- **Components:** Server Components by default; `"use client"` for interactivity/motion
+- **Props:** every block exports its content interface
+- **Content shape:** demo data in `./[name].content.ts` — never inline copy in JSX
+- **Links as buttons:** use `buttonVariants()` on `<Link>`, not `<Button asChild>`
+- **Images:** alt text and explicit dimensions always
+- **TypeScript:** no `any`, no `@ts-ignore` without explanation
+- **No dead code, no commented-out blocks**
+- **Responsive:** mobile-first, tested at standard breakpoints
+- **Generated files:** `component-map.ts`, `content-map.ts`, `.generated/` — never edit by hand, regenerate with `pnpm run prebuild:all`
+- **Clerk v7 patterns:** Use `Show` component (not `SignedIn`/`SignedOut`), `auth()` from `@clerk/nextjs/server`, `useUser()` client-side
+- **Commits:** small and reviewable
 
 ---
 
-## How to work with me (Claude Code, this is you)
+## How to work with me (Claude Code)
 
-- Show your work in small, reviewable steps rather than dumping a whole feature at once.
-- If you find yourself making an unspecified decision, surface it and ask rather than assuming.
-- If something in this doc starts feeling wrong as we build, say so — and propose an edit to the doc itself.
-- Treat this `CLAUDE.md` as living. We will update it as patterns emerge.
+- Show work in small, reviewable steps
+- Surface unspecified decisions — ask rather than assuming
+- If something in this doc feels wrong, propose an edit
+- Treat this as living — update as patterns emerge
+- When adding blocks: update registry, run codegen, verify
 
 ---
 
-## Open questions (remaining)
+## Open questions
 
-- **Showcase site evolution:** When do we add search/filter? Likely when we hit 15+ blocks.
-- **Testing:** Revisit Playwright for visual regression testing when the library has 10+ blocks.
-- **Storybook:** Skipped for now — the Next.js showcase site is the preview tool. Revisit if the showcase becomes insufficient.
+- **Search:** Add search to the storefront when block count makes filtering insufficient
+- **Testing:** Revisit Playwright for visual regression
+- **Analytics:** Track which blocks are most viewed/copied — will need a database when we get there
+- **Pricing model:** Monthly pricing set at $9.99 — revisit based on market feedback
 
-Bring new questions to my attention as you spot them.
 @AGENTS.md
