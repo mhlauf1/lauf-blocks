@@ -55,7 +55,7 @@ The single biggest implication: **blocks are data-driven from day one.** No hard
 
 Modern, clean, system-feeling, minimal color palette. The trap with "minimal" is landing as generic shadcn-default. To stay minimal _and_ distinctive, the differentiation lives in details:
 
-- **Typefaces:** Satoshi 700 for headlines (`font-heading`), Inter 400 for body (`font-sans`). Satoshi is self-hosted via `next/font/local`; Inter via `next/font/google`.
+- **Typefaces:** Satoshi (400/500/700) for headlines (`font-heading`), Inter 400 for body (`font-sans`). Satoshi is self-hosted via `next/font/local`; Inter via `next/font/google`.
 - Real spacing discipline on an 8pt grid; body type around 16–17px with generous line-height (most "minimal" sites are too cramped)
 - **Borders, no shadows.** Hairline 1px borders in `border` token. Depth comes from spacing and background color shifts, not elevation.
 - **Accent color:** Teal (`#0D9488` / oklch 0.55 0.13 175). Full custom scale defined as `teal-50` through `teal-950`. Primary button/link/ring color uses this.
@@ -103,11 +103,13 @@ No spec markdown files — the typed content interface is the contract. We'll ad
   /ui                        # shadcn primitives (do not edit unless necessary)
   /blocks
     /marketing
-      /hero
+      /hero-centered
         /hero-centered.tsx
         /hero-centered.content.tsx
+      /hero-split
         /hero-split.tsx
         /hero-split.content.ts
+      /features-grid/...
     /app/...
     /templates/...
   /theme-provider.tsx         # next-themes wrapper (client component)
@@ -117,6 +119,8 @@ No spec markdown files — the typed content interface is the contract. We'll ad
   /utils.ts                   # cn() and other utilities
 /public
 ```
+
+The showcase has a sticky header (logo + theme toggle) defined in `/app/blocks/layout.tsx`.
 
 Note: blocks live in `/components/blocks/` and showcase routes live in `/app/blocks/`. This two-directory pattern is a known friction point but keeps component code separate from routing.
 

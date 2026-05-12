@@ -29,14 +29,35 @@ const blocks: Block[] = [
     slug: "hero-video",
     category: "Marketing",
     description: "Centered hero with an embedded or background video.",
-    built: false,
+    built: true,
   },
   {
     name: "Hero — With Dashboard",
     slug: "hero-dashboard",
     category: "Marketing",
     description: "Hero with a product screenshot or dashboard mockup below the fold.",
-    built: false,
+    built: true,
+  },
+  {
+    name: "Hero — Fullbleed Image",
+    slug: "hero-fullbleed-image",
+    category: "Marketing",
+    description: "Full-viewport background image with text pinned bottom-left over gradient scrim.",
+    built: true,
+  },
+  {
+    name: "Hero — Fullbleed Video",
+    slug: "hero-fullbleed-video",
+    category: "Marketing",
+    description: "Full-viewport background video (autoplay, muted, looped) with text bottom-left.",
+    built: true,
+  },
+  {
+    name: "Hero — Fullbleed Split",
+    slug: "hero-fullbleed-split",
+    category: "Marketing",
+    description: "Full-viewport media background with headline left, description + CTAs bottom-right.",
+    built: true,
   },
 
   // ── Navbars ──
@@ -61,7 +82,7 @@ const blocks: Block[] = [
     slug: "features-grid",
     category: "Marketing",
     description: "3- or 4-column icon grid. Each card has icon, title, and description.",
-    built: false,
+    built: true,
   },
   {
     name: "Features — Alternating Rows",
