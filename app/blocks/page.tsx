@@ -66,14 +66,14 @@ const blocks: Block[] = [
     slug: "navbar-simple",
     category: "Marketing",
     description: "Horizontal nav with logo, links, and CTA. Mobile hamburger menu.",
-    built: false,
+    built: true,
   },
   {
     name: "Navbar — With Dropdowns",
     slug: "navbar-dropdowns",
     category: "Marketing",
     description: "Nav with mega-menu or dropdown sections for product/features.",
-    built: false,
+    built: true,
   },
 
   // ── Features ──
@@ -89,21 +89,21 @@ const blocks: Block[] = [
     slug: "features-alternating",
     category: "Marketing",
     description: "Text + visual rows that alternate left/right down the page.",
-    built: false,
+    built: true,
   },
   {
     name: "Features — Bento Grid",
     slug: "features-bento",
     category: "Marketing",
     description: "Asymmetric bento-style grid with mixed card sizes.",
-    built: false,
+    built: true,
   },
   {
     name: "Features — With Large Visual",
     slug: "features-visual",
     category: "Marketing",
     description: "Feature list on one side, large product screenshot on the other.",
-    built: false,
+    built: true,
   },
 
   // ── Pricing ──
@@ -112,21 +112,21 @@ const blocks: Block[] = [
     slug: "pricing-three-tier",
     category: "Marketing",
     description: "Classic 3-column pricing cards with highlighted recommended plan.",
-    built: false,
+    built: true,
   },
   {
     name: "Pricing — Comparison Table",
     slug: "pricing-comparison",
     category: "Marketing",
     description: "Full feature comparison table across plans.",
-    built: false,
+    built: true,
   },
   {
     name: "Pricing — Simple Toggle",
     slug: "pricing-toggle",
     category: "Marketing",
     description: "Two-tier pricing with monthly/annual toggle.",
-    built: false,
+    built: true,
   },
 
   // ── Testimonials ──
@@ -135,21 +135,21 @@ const blocks: Block[] = [
     slug: "testimonials-carousel",
     category: "Marketing",
     description: "Horizontal carousel of quote cards with avatar, name, and role.",
-    built: false,
+    built: true,
   },
   {
     name: "Testimonials — Grid",
     slug: "testimonials-grid",
     category: "Marketing",
     description: "Masonry or uniform grid of testimonial cards.",
-    built: false,
+    built: true,
   },
   {
     name: "Testimonials — Featured Quote",
     slug: "testimonials-featured",
     category: "Marketing",
     description: "Single large pull-quote with photo and attribution.",
-    built: false,
+    built: true,
   },
 
   // ── CTAs ──
@@ -158,21 +158,21 @@ const blocks: Block[] = [
     slug: "cta-banner",
     category: "Marketing",
     description: "Full-width banner with headline, body, and action button.",
-    built: false,
+    built: true,
   },
   {
     name: "CTA — Split",
     slug: "cta-split",
     category: "Marketing",
     description: "Text on one side, email input or CTA on the other.",
-    built: false,
+    built: true,
   },
   {
     name: "CTA — Newsletter",
     slug: "cta-newsletter",
     category: "Marketing",
     description: "Centered email capture with headline and privacy note.",
-    built: false,
+    built: true,
   },
 
   // ── FAQ ──
@@ -254,7 +254,7 @@ const blocks: Block[] = [
     slug: "footer-columns",
     category: "Marketing",
     description: "Multi-column footer with link groups, logo, and legal line.",
-    built: false,
+    built: true,
   },
   {
     name: "Footer — Simple",
