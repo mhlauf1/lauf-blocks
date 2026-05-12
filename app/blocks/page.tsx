@@ -181,14 +181,14 @@ const blocks: Block[] = [
     slug: "faq-accordion",
     category: "Marketing",
     description: "Expandable question/answer list with smooth open/close.",
-    built: false,
+    built: true,
   },
   {
     name: "FAQ — Two Column",
     slug: "faq-two-column",
     category: "Marketing",
     description: "Questions and answers laid out in a two-column grid.",
-    built: false,
+    built: true,
   },
 
   // ── Stats / Metrics ──
@@ -197,14 +197,14 @@ const blocks: Block[] = [
     slug: "stats-row",
     category: "Marketing",
     description: "Horizontal row of big numbers with labels (e.g., 99.9% uptime).",
-    built: false,
+    built: true,
   },
   {
     name: "Stats — With Context",
     slug: "stats-context",
     category: "Marketing",
     description: "Stats with supporting copy or icons for each metric.",
-    built: false,
+    built: true,
   },
 
   // ── Logo Cloud ──
@@ -213,14 +213,14 @@ const blocks: Block[] = [
     slug: "logo-cloud-simple",
     category: "Marketing",
     description: "Row of partner/client logos with optional heading.",
-    built: false,
+    built: true,
   },
   {
     name: "Logo Cloud — Marquee",
     slug: "logo-cloud-marquee",
     category: "Marketing",
     description: "Infinitely scrolling horizontal logo ticker.",
-    built: false,
+    built: true,
   },
 
   // ── Team ──
@@ -229,7 +229,7 @@ const blocks: Block[] = [
     slug: "team-grid",
     category: "Marketing",
     description: "Photo + name + role cards in a responsive grid.",
-    built: false,
+    built: true,
   },
 
   // ── Contact ──
@@ -238,14 +238,14 @@ const blocks: Block[] = [
     slug: "contact-form",
     category: "Marketing",
     description: "Contact form with name, email, message fields and submit.",
-    built: false,
+    built: true,
   },
   {
     name: "Contact — Split",
     slug: "contact-split",
     category: "Marketing",
     description: "Contact info on one side, form on the other.",
-    built: false,
+    built: true,
   },
 
   // ── Footer ──
@@ -261,7 +261,7 @@ const blocks: Block[] = [
     slug: "footer-simple",
     category: "Marketing",
     description: "Minimal single-row footer with links and copyright.",
-    built: false,
+    built: true,
   },
 
   // ── App: Auth ──
